@@ -1,5 +1,7 @@
 import time
+import keyboard
 from rich.align import Align
+from schedule import Schedule
 
 from rich import box
 from rich.live import Live
@@ -11,70 +13,43 @@ from rich.layout import Layout
 
 console = Console()
 
+# Create layout
 layout = Layout()
 layout.split_column(
-    Layout(name="Weekly Scheduler"),
-    Layout(name="Options")
+    Layout(name="scheduler"),
+    Layout(name="cmd")
 )
-layout["Options"].size = 3 
+layout["cmd"].size = 3 
 
 
-import datetime
-one_day = datetime.timedelta(days=1)
+schedule = Schedule()
 
-def get_week(date):
-  """Return the full week (Sunday first) of the week containing the given date.
-  'date' may be a datetime or date instance (the same type is returned).
-  """
-  day_idx = date.weekday()  # turn sunday into 0, monday into 1, etc.
-  sunday = date - datetime.timedelta(days=day_idx)
-  date = sunday
-  for n in range(7):
-    yield date
-    date += one_day
-
-week = [d.isoformat() for d in get_week(datetime.datetime.now().date())]
-
-table = Table(show_header=True, header_style="bold blue", show_edge=False, expand=True)
-table.add_column("Hours", style="dim", ratio=1)
-table.add_column(f"Monday ({week[0]})", style="dim", ratio=2)
-table.add_column(f"Tuesday ({week[1]})", style="dim", ratio=2)
-table.add_column(f"Wednesday ({week[2]})", style="dim", ratio=2)
-table.add_column(f"Thursday ({week[3]})", style="dim", ratio=2)
-table.add_column(f"Friday ({week[4]})", style="dim", ratio=2)
-table.add_column(f"Saturday ({week[5]})", style="dim", ratio=2)
-table.add_column(f"Sunday ({week[6]})", style="dim", ratio=2)
-for hour in range(25):
-    table.add_row(f"{hour}")
-
-table_panel = Panel(table, style="")
-# table_panel = Panel(
-#     Align.center(
-#         Group("\n", Align.center(table)),
-#         vertical="middle",
-#     ),
-#     box=box.ROUNDED,
-#     padding=(1, 2),
-#     title="[b red]Thanks for trying out Rich!",
-#     border_style="bright_blue",
-# )
-
-
-
+# Commands Panel
 cmds = Table.grid(padding=(4,4))
 cmds.add_column(justify="left")
 cmds.add_column(justify="left")
 cmds.add_column(justify="left")
 cmds.add_row("[bold green]'a'[/bold green]: Add event",
              "[bold blue]'e'[/bold blue]: Edit event",
-             "[bold red]'d'[/bold red]: Delete event")
+             "[bold red]'d'[/bold red]: Delete event",
+             "[bold cyan3]'j'[/bold cyan3]: Scroll down",
+             "[bold cyan3]'k'[/bold cyan3]: Scroll up")
 cmds_panel = Panel(cmds, border_style="bright_blue")
 
 
-layout["Weekly Scheduler"].update(table_panel)
-layout["Options"].update(cmds_panel)
+# Add the panels to layout
+layout["scheduler"].update(schedule.get_panel())
+layout["cmd"].update(cmds_panel)
 
+# Update loop
 with Live(layout, refresh_per_second=4):  # update 4 times a second to feel fluid
     while True:
+        if keyboard.read_key() == "j":
+            schedule.scroll_up()
+        if keyboard.read_key() == "k":
+            schedule.scroll_down()
+
+        layout["scheduler"].update(schedule.update())
+
         time.sleep(0.1)  # arbitrary delay
         # update the renderable internally
