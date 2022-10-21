@@ -1,4 +1,5 @@
 import time
+import sys
 import keyboard
 from rich.align import Align
 from schedule import Schedule
@@ -10,6 +11,7 @@ from rich.console import Console, Group
 from rich.panel import Panel
 from rich.table import Table
 from rich.layout import Layout
+
 
 console = Console()
 
@@ -36,7 +38,6 @@ cmds.add_row("[bold green]'a'[/bold green]: Add event",
              "[bold cyan3]'k'[/bold cyan3]: Scroll up")
 cmds_panel = Panel(cmds, border_style="bright_blue")
 
-
 # Add the panels to layout
 layout["scheduler"].update(schedule.get_panel())
 layout["cmd"].update(cmds_panel)
@@ -44,10 +45,12 @@ layout["cmd"].update(cmds_panel)
 # Update loop
 with Live(layout, refresh_per_second=4):  # update 4 times a second to feel fluid
     while True:
-        if keyboard.read_key() == "j":
+        if keyboard.is_pressed("j"):
             schedule.scroll_up()
-        if keyboard.read_key() == "k":
+        elif keyboard.is_pressed("k"):
             schedule.scroll_down()
+        elif keyboard.is_pressed("q"):
+            break
 
         layout["scheduler"].update(schedule.update())
 
