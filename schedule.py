@@ -10,7 +10,8 @@ class Schedule():
         self.week = [d for d in self.get_week(datetime.datetime.now().date())]
         event1 = Event(("TU", 10), "Event 1")
         event2 = Event(("SU", 7), "Event 2", "red")
-        self.events = [event1, event2]
+        event3 = Event(("SA", 8), "Event 3", "yellow")
+        self.events = [event1, event2, event3]
 
         self.table = self.createTable()
         self.table_panel = Panel(self.table, style="")
@@ -24,8 +25,8 @@ class Schedule():
         self.table = self.createTable()
         for hour in range(self.top_hour, 56):
             real_h = hour%24
-            for event in self.events:
-                self.create_row(event, real_h)
+            self.create_row(real_h)
+            # for event in self.events:
 
         self.table_panel = Panel(self.table, style="")
         return self.table_panel
@@ -60,19 +61,24 @@ class Schedule():
         else:
             self.top_hour -= 1
 
-    def create_row(self, event, hour):
-        info = event.get_info()
-        date = info["date"]
-        if date[1] == hour:
-            self.table.add_row(f"{hour}\n",
-                               f"{info['title'] if date[0] == 'M' else ''}",
-                               f"{info['title'] if date[0] == 'TU' else ''}",
-                               f"{info['title'] if date[0] == 'W' else ''}",
-                               f"{info['title'] if date[0] == 'TH' else ''}",
-                               f"{info['title'] if date[0] == 'F' else ''}",
-                               f"{info['title'] if date[0] == 'SA' else ''}",
-                               f"{info['title'] if date[0] == 'SU' else ''}")
-        else:
+    def create_row(self, hour):
+        is_event = False
+        for event in self.events:
+            info = event.get_info()
+            date = info["date"]
+            if date[1] == hour:
+                is_event = True
+                self.table.add_row(f"{hour}\n",
+                                   f"{info['title'] if date[0] == 'M' else ''}",
+                                   f"{info['title'] if date[0] == 'TU' else ''}",
+                                   f"{info['title'] if date[0] == 'W' else ''}",
+                                   f"{info['title'] if date[0] == 'TH' else ''}",
+                                   f"{info['title'] if date[0] == 'F' else ''}",
+                                   f"{info['title'] if date[0] == 'SA' else ''}",
+                                   f"{info['title'] if date[0] == 'SU' else ''}")
+                break
+
+        if is_event == False:
             self.table.add_row(f"{hour}\n")
 
 
