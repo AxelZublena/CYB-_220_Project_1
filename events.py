@@ -24,20 +24,50 @@ class Events():
         input("You will be creating a new event. Press any key to continue....")
         os.system('cls' if os.name == 'nt' else 'clear')
 
-        day = input("Choose a day [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]: ")
+        days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        day = input("Choose a day [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]: ").title()
+        if day not in days:
+            input(f"{day} is not a valid day. Press any key to continue....")
+            return
+
         time = int(Prompt.ask("Hour (0-23)"))
+        if not 0 <= time < 24:
+            input(f"{time} is not a valid hour. Press any key to continue....")
+            return
+
         title = Prompt.ask("Title")
         event = Event((day, time), len(self.events), title, random.choice(self.COLORS))
         self.events.append(event)
 
     def del_event(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-        input("You will be creating deleting an event. Press any key to continue....")
-        os.system('cls' if os.name == 'nt' else 'clear')
+        input("You will be deleting an event. Press any key to continue....")
+        while True:
+            os.system('cls' if os.name == 'nt' else 'clear')
 
-        event_id = input("ID of the event to delete: ")
-        event_id = int(event_id[1:])
-        del self.events[event_id]
+            event_id = int(input("ID of the event to delete (-1 to abort): "))
+            if event_id == -1:
+                break
+            try:
+                del self.events[event_id]
+                break
+            except:
+                input(f"{event_id} is not a valid ID. Press any key to continue....")
+                break
+
 
     def edit_event(self):
-        event = input("Edit your event: \n")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        input("You will be deleting an event. Press any key to continue....")
+        while True:
+            os.system('cls' if os.name == 'nt' else 'clear')
+
+            event_id = int(input("ID of the event to edit (-1 to abort): "))
+            if event_id == -1:
+                break
+            try:
+                del self.events[event_id]
+                break
+            except:
+                input(f"{event_id} is not a valid ID. Press any key to continue....")
+                break

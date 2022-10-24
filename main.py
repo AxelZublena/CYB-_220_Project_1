@@ -52,9 +52,9 @@ while True:
         while True:
             time.sleep(0.1)  # arbitrary delay
             if keyboard.is_pressed("up"):
-                schedule.scroll_up()
-            elif keyboard.is_pressed("down"):
                 schedule.scroll_down()
+            elif keyboard.is_pressed("down"):
+                schedule.scroll_up()
             elif keyboard.is_pressed("a"):
                 state = "add"
                 break
