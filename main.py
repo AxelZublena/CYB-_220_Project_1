@@ -1,9 +1,7 @@
 import time
-import sys
 import keyboard
 from rich.align import Align
 from schedule import Schedule
-from edit_window import EditWindow
 from events import Events 
 
 from rich import box
@@ -28,7 +26,6 @@ layout["cmd"].size = 3
 
 events = Events()
 schedule = Schedule(events.get_events())
-menu = EditWindow()
 
 # Commands Panel
 cmds = Table.grid(padding=(4,4))

@@ -2,6 +2,7 @@ from event import Event
 from rich.prompt import Prompt
 
 import random
+import os
 
 class Events():
 
@@ -19,14 +20,21 @@ class Events():
         return self.events
 
     def add_event(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        input("You will be creating a new event. Press any key to continue....")
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         day = input("Choose a day [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]: ")
-        day = day[1:]
         time = int(Prompt.ask("Hour (0-23)"))
         title = Prompt.ask("Title")
         event = Event((day, time), len(self.events), title, random.choice(self.COLORS))
         self.events.append(event)
 
     def del_event(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        input("You will be creating deleting an event. Press any key to continue....")
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         event_id = input("ID of the event to delete: ")
         event_id = int(event_id[1:])
         del self.events[event_id]
