@@ -36,7 +36,8 @@ cmds.add_row("[bold green]'a'[/bold green]: Add event",
              "[bold blue]'e'[/bold blue]: Edit event",
              "[bold red]'d'[/bold red]: Delete event",
              "[bold cyan3]'down'[/bold cyan3]: Scroll down",
-             "[bold cyan3]'up'[/bold cyan3]: Scroll up")
+             "[bold cyan3]'up'[/bold cyan3]: Scroll up",
+             "[bold grey]'q'[/bold grey]: Quit")
 cmds_panel = Panel(cmds, border_style="bright_blue")
 
 # Add the panels to layout
