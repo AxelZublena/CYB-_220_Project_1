@@ -5,14 +5,10 @@ from rich.table import Table
 from rich.panel import Panel
 
 class Schedule():
-    def __init__(self):
+    def __init__(self, events):
         self.top_hour = 0
         self.week = [d for d in self.get_week(datetime.datetime.now().date())]
-        event1 = Event(("TU", 10), "Event 1")
-        event2 = Event(("SU", 7), "Event 2", "red")
-        event3 = Event(("SA", 8), "Event 3", "yellow")
-        self.events = [event1, event2, event3]
-
+        self.events = events
         self.table = self.createTable()
         self.table_panel = Panel(self.table, style="")
 
@@ -20,17 +16,16 @@ class Schedule():
     def get_panel(self):
         return self.table_panel
 
-    def update(self):
-        # self.table = self.createTable()
+    def set_events(self, events):
+        self.events = events
+
+    def update(self, events):
         self.table = self.createTable()
         for hour in range(self.top_hour, 56):
             real_h = hour%24
-            self.create_row(real_h)
-            # for event in self.events:
+            self.create_row(real_h, events)
 
         self.table_panel = Panel(self.table, style="")
-        return self.table_panel
-
 
 
     def createTable(self):
@@ -61,25 +56,31 @@ class Schedule():
         else:
             self.top_hour -= 1
 
-    def create_row(self, hour):
-        is_event = False
-        for event in self.events:
+    def create_row(self, hour, events):
+        same_hour_events = []
+        for event in events:
             info = event.get_info()
             date = info["date"]
             if date[1] == hour:
-                is_event = True
-                self.table.add_row(f"{hour}\n",
-                                   f"{info['title'] if date[0] == 'M' else ''}",
-                                   f"{info['title'] if date[0] == 'TU' else ''}",
-                                   f"{info['title'] if date[0] == 'W' else ''}",
-                                   f"{info['title'] if date[0] == 'TH' else ''}",
-                                   f"{info['title'] if date[0] == 'F' else ''}",
-                                   f"{info['title'] if date[0] == 'SA' else ''}",
-                                   f"{info['title'] if date[0] == 'SU' else ''}")
-                break
+                same_hour_events.append(event)
 
-        if is_event == False:
-            self.table.add_row(f"{hour}\n")
+        self.table.add_row(f"{hour}\n",
+                           f"{self.get_day(same_hour_events, 'M')}",
+                           f"{self.get_day(same_hour_events, 'TU')}",
+                           f"{self.get_day(same_hour_events, 'W')}",
+                           f"{self.get_day(same_hour_events, 'TH')}",
+                           f"{self.get_day(same_hour_events, 'F')}",
+                           f"{self.get_day(same_hour_events, 'SA')}",
+                           f"{self.get_day(same_hour_events, 'SU')}")
+
+    def get_day(self, same_hour_events, day):
+        for event in same_hour_events:
+            info = event.get_info()
+            date = info["date"]
+            if date[0] == day:
+                return f"{info['title']}"
+        return ""
+
 
 
     def get_week(self, date):
