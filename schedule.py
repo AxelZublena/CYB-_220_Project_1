@@ -65,13 +65,13 @@ class Schedule():
                 same_hour_events.append(event)
 
         self.table.add_row(f"{hour}\n",
-                           f"{self.get_day(same_hour_events, 'M')}",
-                           f"{self.get_day(same_hour_events, 'TU')}",
-                           f"{self.get_day(same_hour_events, 'W')}",
-                           f"{self.get_day(same_hour_events, 'TH')}",
-                           f"{self.get_day(same_hour_events, 'F')}",
-                           f"{self.get_day(same_hour_events, 'SA')}",
-                           f"{self.get_day(same_hour_events, 'SU')}")
+                           f"{self.get_day(same_hour_events, 'Monday')}",
+                           f"{self.get_day(same_hour_events, 'Tuesday')}",
+                           f"{self.get_day(same_hour_events, 'Wednesday')}",
+                           f"{self.get_day(same_hour_events, 'Thursday')}",
+                           f"{self.get_day(same_hour_events, 'Friday')}",
+                           f"{self.get_day(same_hour_events, 'Saturday')}",
+                           f"{self.get_day(same_hour_events, 'Sunday')}")
 
     def get_day(self, same_hour_events, day):
         for event in same_hour_events:
