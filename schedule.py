@@ -78,7 +78,7 @@ class Schedule():
             info = event.get_info()
             date = info["date"]
             if date[0] == day:
-                return f"{info['title']}"
+                return f"{info['title']}\nID: {info['id']}"
         return ""
 
 
