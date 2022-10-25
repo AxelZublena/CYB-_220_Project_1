@@ -1,13 +1,11 @@
 import time
 import keyboard
-from rich.align import Align
 from schedule import Schedule
 from events import Events 
 
-from rich import box
 from rich.live import Live
 from rich.table import Table
-from rich.console import Console, Group
+from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.layout import Layout
