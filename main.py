@@ -13,6 +13,7 @@ from rich.table import Table
 from rich.layout import Layout
 
 
+# Create Rich console object
 console = Console()
 
 # Create layout
@@ -24,6 +25,7 @@ layout.split_column(
 layout["cmd"].size = 3 
 
 
+# Initialize events and Schedule objects
 events = Events()
 schedule = Schedule(events.get_events())
 
@@ -42,16 +44,19 @@ cmds_panel = Panel(cmds, border_style="bright_blue")
 
 # Add the panels to layout
 layout["scheduler"].update(schedule.get_panel())
-# layout["scheduler"].update(menu.get_panel())
 layout["cmd"].update(cmds_panel)
 
+# String holding the state of app
 state = "schedule"
 
+# Indefinite loop that runs until the user quits the app
 while True:
-    # Update loop
+    # Update loop every 4 seconds
     with Live(layout, refresh_per_second=4, screen=True):  # update 4 times a second to feel fluid
         while True:
-            time.sleep(0.1)  # arbitrary delay
+            time.sleep(0.1)  # arbitrary delay; prevent the loop from going too fast
+
+            # Detects key presses, updates the state or call the right method
             if keyboard.is_pressed("up"):
                 schedule.scroll_down()
             elif keyboard.is_pressed("down"):

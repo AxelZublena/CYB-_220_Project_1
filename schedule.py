@@ -20,6 +20,12 @@ class Schedule():
         self.events = events
 
     def update(self, events):
+        '''
+        1. Re-create the table (schedule) 
+        2. Loop through every hours (0-23)
+        3. Create the row for every hours
+        4. Update the pannel
+        '''
         self.table = self.createTable()
         for hour in range(self.top_hour, 56):
             real_h = hour%24
@@ -29,6 +35,7 @@ class Schedule():
 
 
     def createTable(self):
+        '''Creates Rich table object with 7 columns (Hours and days)'''
         # Main window: schedule
         table = Table(show_header=True, header_style="bold blue", show_edge=False, expand=True, show_lines=True)
         table.add_column("Hours", style="dim", ratio=1)
@@ -43,20 +50,24 @@ class Schedule():
         return table
 
     def scroll_up(self):
+        '''Update the first row of the table (starting hour used later by self.update())'''
         if self.top_hour > 24:
             self.top_hour = 0
         else:
             self.top_hour += 1
-        
-        print(self.top_hour)
 
     def scroll_down(self):
+        '''Update the first row of the table (starting hour used later by self.update())'''
         if self.top_hour > 24:
             self.top_hour = 0
         else:
             self.top_hour -= 1
 
     def create_row(self, hour, events):
+        '''
+        1. Gather all events from the same hour (row)
+        2. Add string to columns if event meets the criteria
+        '''
         same_hour_events = []
         for event in events:
             info = event.get_info()
@@ -74,6 +85,7 @@ class Schedule():
                            f"{self.get_day(same_hour_events, 'Sunday')}")
 
     def get_day(self, same_hour_events, day):
+        '''Returns event information if the days correspond'''
         for event in same_hour_events:
             info = event.get_info()
             date = info["date"]
