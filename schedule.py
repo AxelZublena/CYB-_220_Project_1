@@ -1,5 +1,4 @@
 import datetime
-from event import Event
 
 from rich.table import Table
 from rich.panel import Panel
@@ -35,7 +34,7 @@ class Schedule():
 
 
     def createTable(self):
-        '''Creates Rich table object with 7 columns (Hours and days)'''
+        '''Creates Rich table object with 8 columns (Hours and days)'''
         # Main window: schedule
         table = Table(show_header=True, header_style="bold blue", show_edge=False, expand=True, show_lines=True)
         table.add_column("Hours", style="dim", ratio=1)

@@ -4,10 +4,8 @@ from rich.prompt import Prompt
 
 import random
 import os
-import re
 
 class Events():
-
     def __init__(self):
         # Set constants
         self.COLORS = ("red", "blue", "yellow", "green")
